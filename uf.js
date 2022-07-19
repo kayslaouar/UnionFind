@@ -15,6 +15,12 @@ class UnionFind {
         }
         let size = n;
 
+        this.add = (x) => {
+            sets[x] = node({id: x});
+            ++size;
+            return x;
+        }
+
         this.union = (x, y) => {
             let setX = sets[this.find(x)];
             let setY = sets[this.find(y)];
@@ -32,6 +38,9 @@ class UnionFind {
         }
     
         this.find = id => {
+            if (!(id in sets)) {
+                return null;
+            }
             let cur = sets[id];
             while (sets[cur.id] !== sets[cur.id].p) {
                 cur = sets[cur.id].p;
@@ -39,12 +48,17 @@ class UnionFind {
             return cur.id;
         }
 
-        this.get = (i) => {
-            const mappings = new Array(n).fill(null).map(() => []);
-            for (let i = 0; i < n; ++i) {
-                mappings[this.find(i)].push(i);
+        this.get = wid => {
+            const mappings = {};
+            for (const id in sets) {
+                let gid = this.find(id);
+                if (gid in mappings) {
+                    mappings[gid].push(id);
+                } else {
+                    mappings[gid] = [id];
+                }
             }
-            return i === undefined ? mappings[this.find(i)] : mappings.filter(obj => obj.length !== 0);
+            return wid !== undefined ? mapping[this.find(wid)] : Object.values(mappings);
         }
 
         this.size = () => size;
