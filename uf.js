@@ -58,7 +58,7 @@ class UnionFind {
                     mappings[gid] = [id];
                 }
             }
-            return wid !== undefined ? mapping[this.find(wid)] : Object.values(mappings);
+            return wid !== undefined ? mappings[this.find(wid)] : Object.values(mappings);
         }
 
         this.size = () => size;
